@@ -23,4 +23,6 @@ Expose 80
 
 ## Step 5:
 # Run app.py at container launch
-CMD ["python", "flask_app/webapp.py"]
+#CMD ["python", "flask_app/webapp.py"]
+# Get container ID
+CMD docker ps -qa
