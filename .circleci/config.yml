@@ -1,17 +1,19 @@
 version: 2.1
 jobs:
-  build:
-    docker:
-      machine: # executor type
-        image: ubuntu-2004:202010-01 # # recommended linux image - includes Ubuntu 20.04, docker 19.03.13, docker-compose 1.27.4
+  create-docker:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: create docker image
+          command: |
+            pwd
+            ls -al
+            cd ~/files
+            ls -la
 
-        steps:
-          # Commands run in a Linux virtual machine environment
-          - checkout
-          - run:
-              name: create docker image
-              command: |
-                pwd
-                ls -al
-                cd ~/files
-                ls -la
+
+workflows:
+  default:
+    jobs:
+      - create-docker
