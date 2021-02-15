@@ -12,6 +12,9 @@ jobs:
             cd ~/project/.circleci/files
             ls -la
 
+      - run:
+          docker build --tag=hello .
+          exit 1
 
 workflows:
   default:
