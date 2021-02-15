@@ -14,7 +14,7 @@ jobs:
 
       - run:
           docker image ls #build --tag=hello .
-          exit 1
+          #exit 1
 
 workflows:
   default:
