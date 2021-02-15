@@ -17,8 +17,9 @@ jobs:
           command: |
             ls -la
             cd ~/project/.circleci/dockerstuff
-            docker build --tag=hello .
-            docker image ls
+            #docker build --tag=hello .
+            #docker image ls
+            sh run_docker.sh
 
 
 workflows:
