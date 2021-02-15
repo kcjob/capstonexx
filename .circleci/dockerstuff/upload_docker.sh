@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
+# This file tags and uploads an image to Docker Hub
 
-## Complete the following steps to get Docker running locally
+# Assumes that an image is built via `run_docker.sh`
 
 # Step 1:
-# Remove container
-docker rm $(docker ps -a -f status=exited -q)
+# Create dockerpath
+# dockerpath=<your docker ID/path>
+dockerpath=joepub/api
 
-#Step 2:
-# Build image and add a descriptive tag
-docker build --tag=hello .
+# Step 2:
+# Authenticate & tag
+echo "Docker ID and Image: $dockerpath "
 
 # Step 3:
-# List docker images
-docker image ls
-
-# Step 4:
-# Run flask_app
-docker run --name capstone -p 8000:8000  -p 50000:50000 hello
+# Push image to a docker repository
+docker container commit 790b66098628 joepub/devops
+docker push joepub/devops

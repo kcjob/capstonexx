@@ -3,7 +3,7 @@ FROM python:3.7.3-stretch
 ## Step 1:
 # Create a working directory
 WORKDIR /app
-docker rm $(docker ps -aq)
+#docker rm $(docker ps -aq)
 
 ## Step 2:
 # Copy source code to working directory
@@ -23,8 +23,8 @@ Expose 80
 
 ## Step 5:
 # Run app.py at container launch
-#CMD ["python", "flask_app/webapp.py"]
+CMD ["python", "flask_app/webapp.py"]
 #Start container
-docker run -i -t --name=hello
+#docker run -i -t --name=hello
 # Get container ID
-docker ps -qa
+#docker ps -qa

@@ -20,6 +20,10 @@ jobs:
             #docker build --tag=hello .
             #docker image ls
             sh run_docker.sh
+      - run:
+          name: get docker container ID
+          command: |
+            docker rm $(docker ps -aq)
 
 
 workflows:
