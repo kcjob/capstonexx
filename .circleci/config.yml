@@ -13,7 +13,7 @@ jobs:
             ls -la
 
       - run:
-          docker build --tag=hello .
+          docker image ls #build --tag=hello .
           exit 1
 
 workflows:
