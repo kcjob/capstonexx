@@ -16,7 +16,7 @@ jobs:
           name: build docker image
           command: |
             ls -la
-            cd ~/project/.circleci/files
+            cd ~/project/.circleci/dockerstuff
             docker build --tag=hello .
             docker image ls
 
