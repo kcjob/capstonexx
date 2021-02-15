@@ -9,7 +9,7 @@ jobs:
           command: |
             pwd
             ls -al
-            cd ~/project/.circleci/files
+            cd ~/project/.circleci/dockerstuff
             ls -la
 
       - run:
