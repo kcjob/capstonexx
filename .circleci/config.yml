@@ -9,7 +9,7 @@ jobs:
           command: |
             pwd
             ls -al
-            cd ~/files
+            cd ~/.circleci/files
             ls -la
 
 
