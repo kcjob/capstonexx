@@ -13,9 +13,12 @@ jobs:
             ls -la
 
       - run:
-          ls -la
-          docker build --tag=hello .
-          #exit 1
+          name: build docker image
+          command: |
+            ls -la
+            cd ~/project/.circleci/files
+            docker build --tag=hello .
+            #exit 1
 
 workflows:
   default:
