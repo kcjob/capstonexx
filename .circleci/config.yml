@@ -31,8 +31,9 @@ jobs:
           command: |
             echo $DOCKER_LOGIN
             echo $DOCKER_PASSWORD
-            #docker login -u username $DOCKER_LOGIN -p $DOCKER_PASSWORD
-            docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+            echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
+
+            #docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
             #docker push joepub/capstone
 
 
