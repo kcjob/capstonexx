@@ -4,3 +4,8 @@
 
 # Step 1:
 docker build --tag=joepub/capstone .
+
+# Step 2:
+# Push image to a docker repository
+docker container commit $(docker ps -qa) joepub/capstone
+docker push joepub/capstone

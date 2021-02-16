@@ -17,13 +17,16 @@ jobs:
           command: |
             ls -la
             cd ~/project/.circleci/dockerstuff
-            #docker build --tag=hello .
-            #docker image ls
             sh run_docker.sh
       - run:
           name: get docker container ID
           command: |
+            docker ps -aq
+      - run:
+          name: get docker container ID
+          command: |
             docker rm $(docker ps -aq)
+
 
 
 workflows:
