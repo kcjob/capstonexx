@@ -28,7 +28,8 @@ jobs:
             docker container commit $(docker ps -qa) joepub/capstone
       - run: |
           name: get docker container ID
-          echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+          command: |
+          docker login -u username $DOCKER_USER -p $DOCKER_PASS
           docker push joepub/capstone
 
 
