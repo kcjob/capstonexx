@@ -29,8 +29,11 @@ jobs:
       - run: |
           name: Upload to repo
           command: |
-            docker login -u username $DOCKER_LOGIN -p $DOCKER_PASSWORD
-            docker push joepub/capstone
+            echo $DOCKER_LOGIN
+            echo $DOCKER_PASSWORD
+            #docker login -u username $DOCKER_LOGIN -p $DOCKER_PASSWORD
+            docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+            #docker push joepub/capstone
 
 
 
