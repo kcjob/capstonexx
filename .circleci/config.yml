@@ -22,10 +22,12 @@ jobs:
           name: get docker container ID
           command: |
             docker ps -aq
-      #- run:
-      #    name: get docker container ID
-      #    command: |
-      #      docker rm $(docker ps -aq)
+      - run:
+          name: get docker container ID
+          command: |
+            docker container commit $(docker ps -qa) joepub/capstone
+            docker push joepub/capstone
+
 
 
 

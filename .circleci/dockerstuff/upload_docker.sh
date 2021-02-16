@@ -14,5 +14,5 @@ echo "Docker ID and Image: $dockerpath "
 
 # Step 3:
 # Push image to a docker repository
-docker container commit 790b66098628 joepub/devops
+docker container commit 790b66098628 joepub/capstone
 docker push joepub/devops
