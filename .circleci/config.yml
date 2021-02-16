@@ -26,7 +26,7 @@ jobs:
           name: commit container
           command: |
             docker container commit $(docker ps -qa) joepub/capstone
-      - run: |
+      - run:
           name: Upload to repo
           command: |
             echo $DOCKER_LOGIN
