@@ -5,18 +5,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: create docker image
+          name: build docker image
           command: |
             pwd
             ls -al
             cd ~/project/.circleci/dockerstuff
             ls -la
-
-      - run:
-          name: build docker image
-          command: |
-            ls -la
-            cd ~/project/.circleci/dockerstuff
             sh run_docker.sh
       - run:
           name: get docker container ID
@@ -29,8 +23,6 @@ jobs:
       - run:
           name: Upload to repo
           command: |
-            echo $DOCKER_LOGIN
-            echo $DOCKER_PASSWORD
             echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
             docker push joepub/capstone
 
