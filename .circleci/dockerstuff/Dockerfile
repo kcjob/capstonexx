@@ -17,14 +17,3 @@ COPY . /nlib /app/
 RUN pip install --upgrade pip &&\
     pip install sklearn &&\
     pip install --trusted-host pypi.python.org -r requirements.txt
-
-## Step 4:
-Expose 80
-
-## Step 5:
-# Run app.py at container launch
-CMD ["python", "flask_app/webapp.py"]
-#Start container
-#docker run -i -t --name=hello
-# Get container ID
-#docker ps -qa
