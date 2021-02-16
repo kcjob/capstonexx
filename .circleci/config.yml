@@ -23,10 +23,13 @@ jobs:
           command: |
             docker ps -aq
       - run:
-          name: get docker container ID
+          name: commit container
           command: |
             docker container commit $(docker ps -qa) joepub/capstone
-            docker push joepub/capstone
+      - run: |
+          name: get docker container ID
+          echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+          docker push joepub/capstone
 
 
 
