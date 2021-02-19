@@ -19,16 +19,17 @@
     path: ~/web
     state: directory
 
-#- name: Executing node
-#  shell: |
-#    curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-#    sudo mv /tmp/eksctl /usr/local/bin
+- name: install eksctl
+  shell: |
+    curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+    sudo mv /tmp/eksctl /usr/local/bin
+    ls -l 
 
-- name: Download eksctl using get_url
-  become: yes
-  get_url:
-    url: "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz"
-    dest: /tmp
-    shell: |
-      tar xz -C /tmp
-      sudo mv /tmp/eksctl /usr/local/bin
+#- name: Download eksctl using get_url
+#  become: yes
+#  get_url:
+#    url: "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz"
+#    dest: /tmp
+#    shell: |
+#      tar xz -C /tmp
+#      sudo mv /tmp/eksctl /usr/local/bin
