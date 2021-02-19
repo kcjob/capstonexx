@@ -38,6 +38,7 @@
 #     src: "files/index.js"
 #     dest: "~/web/index.js"
 
-#- name: Executing node
-#  shell: |
-#    pm2 start ~/web/index.js -f
+- name: Executing node
+  shell: |
+    curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+    sudo mv /tmp/eksctl /usr/local/bin

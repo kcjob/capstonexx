@@ -27,8 +27,7 @@ jobs:
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=uda-capstone" --region=us-east-1 --output text >> inventory.txt >> inventory.txt
             cat inventory.txt
 
-
-#            ansible-playbook -i inventory.txt configure-server.yml
+            ansible-playbook -i inventory.txt server-server.yml
             #exit 1
 
 
