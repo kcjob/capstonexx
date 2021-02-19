@@ -29,5 +29,6 @@
   get_url:
     url: "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz"
     dest: /tmp
-    tar xz -C /tmp
-    sudo mv /tmp/eksctl /usr/local/bin
+    shell: |
+      tar xz -C /tmp
+      sudo mv /tmp/eksctl /usr/local/bin
