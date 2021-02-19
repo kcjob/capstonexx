@@ -24,7 +24,7 @@ jobs:
           name: configure server
           command: |
             cd ~/project/.circleci/ansible
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Project,Values=udapeople" --region=us-east-1 --output text >> inventory.txt
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=uda-capstone" --region=us-east-1 --output text >> inventory.txt >> inventory.txt
             cat inventory.txt
 
 
