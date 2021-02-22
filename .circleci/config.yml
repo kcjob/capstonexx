@@ -59,7 +59,10 @@ jobs:
       - run:
           name: install dependencies
           command: |
+            cd ~/project/.circleci/dockerstuff
             python3 -m venv venv
+            ls -l venv
+            ls -l venv/bin
             . venv/bin/activate
             apt-get -y install make
             make --version
