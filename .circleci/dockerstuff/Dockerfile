@@ -7,9 +7,9 @@ WORKDIR /app
 
 ## Step 2:
 # Copy source code to working directory
-COPY . /flask_app/webapp.py /app/
-COPY . /flask_app/template/ /app/
+COPY flask_app /app/
 COPY . /nlib /app/
+COPY . requirements.txt /app/
 
 ## Step 3:
 # Install packages from requirements.txt
@@ -17,3 +17,11 @@ COPY . /nlib /app/
 RUN pip install --upgrade pip &&\
     pip install sklearn &&\
     pip install --trusted-host pypi.python.org -r requirements.txt
+
+## Step 4:
+Expose 80
+
+## Step 5:
+# Run app.py at container launch
+CMD ["cd", "flask_app"]
+CMD ["python", "webapp.py"]

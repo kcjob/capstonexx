@@ -6,7 +6,7 @@
 # Step 1:
 # Create dockerpath
 # dockerpath=<your docker ID/path>
-dockerpath=joepub/api
+dockerpath=joepub/hello
 
 # Step 2:
 # Authenticate & tag
@@ -14,5 +14,5 @@ echo "Docker ID and Image: $dockerpath "
 
 # Step 3:
 # Push image to a docker repository
-docker container commit 790b66098628 joepub/capstone
-docker push joepub/devops
+docker container commit $(docker ps -qa) joepub/capstone
+docker push joepub/capstone
