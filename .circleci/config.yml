@@ -34,7 +34,7 @@ jobs:
     docker:
       - image: python:3.7.3-stretch
 
-    working_directory: ~/
+    working_directory: ~/project
 
     steps:
       - checkout
@@ -46,7 +46,7 @@ jobs:
             echo 'the path is:'
             pwd
             ls -la
-            ls -la ~/.circleci/
+            ls -la ~/project/.circleci/
 
 
       # Download and cache dependencies
