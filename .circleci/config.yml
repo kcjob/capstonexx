@@ -45,6 +45,7 @@ jobs:
             echo 'path is:' ${pwd}
             echo 'the path is:'
             pwd
+            ls -la 
 
 
       # Download and cache dependencies
