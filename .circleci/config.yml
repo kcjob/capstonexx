@@ -1,4 +1,7 @@
 version: 2.1
+orbs:
+  slack: circleci/slack@4.1
+
 jobs:
   configure-infrastructure:
     docker:
@@ -83,6 +86,10 @@ jobs:
             . venv/bin/activate
             make install
             make lint
+            exit 1
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
 
 
 
