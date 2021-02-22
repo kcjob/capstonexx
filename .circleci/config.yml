@@ -81,6 +81,7 @@ jobs:
           command: |
             cd ~/project/.circleci/dockerstuff
             . venv/bin/activate
+            make install
             make lint
 
 
