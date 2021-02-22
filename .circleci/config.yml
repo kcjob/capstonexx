@@ -39,6 +39,12 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: checking paths
+          command: |
+            echo ${pwd}
+
+
       # Download and cache dependencies
       - restore_cache:
           keys:
