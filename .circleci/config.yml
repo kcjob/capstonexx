@@ -52,7 +52,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "~/project/,circleci/dockerstuff/requirements.txt" }}
+            - v1-dependencies-{{ checksum "~/project/.circleci/dockerstuff/requirements.txt" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
@@ -69,7 +69,7 @@ jobs:
       - save_cache:
             paths:
               - ./venv
-            key: v1-dependencies-{{ checksum "requirements.txt" }}
+            key: v1-dependencies-{{ checksum "~/project/.circleci/dockerstuff/requirements.txt" }}
 
       # run lint!
       - run:
