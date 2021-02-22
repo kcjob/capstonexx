@@ -34,7 +34,7 @@ jobs:
     docker:
       - image: python:3.7.3-stretch
 
-    working_directory: ~/repo
+    working_directory: ~/project/.circleci/dockerstuff
 
     steps:
       - checkout
@@ -65,7 +65,7 @@ jobs:
       - run:
           name: Run lint
           command: |
-            cd ~/project/.circleci/dockerstuff
+            #cd ~/project/.circleci/dockerstuff
             . venv/bin/activate
             make lint
 
