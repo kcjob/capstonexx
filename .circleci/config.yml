@@ -42,7 +42,9 @@ jobs:
       - run:
           name: checking paths
           command: |
-            echo ${pwd}
+            echo 'path is:' ${pwd}
+            echo 'the path is:'
+            pwd
 
 
       # Download and cache dependencies
