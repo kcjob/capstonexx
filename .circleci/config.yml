@@ -103,5 +103,6 @@ jobs:
 workflows:
   default:
     jobs:
-      - create-docker
+      - linting
+      #- create-docker
       #- configure-infrastructure
