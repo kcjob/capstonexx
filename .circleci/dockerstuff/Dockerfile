@@ -20,8 +20,3 @@ RUN pip install --upgrade pip &&\
 
 ## Step 4:
 Expose 80
-
-## Step 5:
-# Run app.py at container launch
-CMD ["cd", "flask_app"]
-CMD ["python", "webapp.py"]
