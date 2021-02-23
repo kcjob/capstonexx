@@ -30,7 +30,7 @@ jobs:
             minikube addons enable registry
       - run:
           name: test kube
-          no_output_timeout: 10m
+          no_output_timeout: 20m
           command: kubectl config view
       - run:
           name: download-container
@@ -44,7 +44,7 @@ jobs:
           template: basic_fail_1
       - run:
           name: run app
-          no_output_timeout: 10m
+          no_output_timeout: 30m
           command: |
             pwd
             kubectl port-forward pod/capstone --address 0.0.0.0 8000:8000
