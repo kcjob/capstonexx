@@ -34,7 +34,63 @@ jobs:
           name: test kube
           command: kubectl config view
       - run:
-          name: download-container
+          name: download-container 1
+          command: |
+            pwd
+            cd /home/circleci/project/.circleci/dockerstuff
+            ls -la
+            sh run_k8s.sh
+      - run:
+          name: download-container 2
+          command: |
+            pwd
+            cd /home/circleci/project/.circleci/dockerstuff
+            ls -la
+            sh run_k8s.sh
+      - run:
+          name: download-container 3
+          command: |
+            pwd
+            cd /home/circleci/project/.circleci/dockerstuff
+            ls -la
+            sh run_k8s.sh
+      - run:
+          name: download-container 4
+          command: |
+            pwd
+            cd /home/circleci/project/.circleci/dockerstuff
+            ls -la
+            sh run_k8s.sh
+      - run:
+          name: download-container 5
+          command: |
+            pwd
+            cd /home/circleci/project/.circleci/dockerstuff
+            ls -la
+            sh run_k8s.sh
+      - run:
+          name: download-container 6
+          command: |
+            pwd
+            cd /home/circleci/project/.circleci/dockerstuff
+            ls -la
+            sh run_k8s.sh
+      - run:
+          name: download-container 7
+          command: |
+            pwd
+            cd /home/circleci/project/.circleci/dockerstuff
+            ls -la
+            sh run_k8s.sh
+      - run:
+          name: download-container 8
+          command: |
+            pwd
+            cd /home/circleci/project/.circleci/dockerstuff
+            ls -la
+            sh run_k8s.sh
+      - run:
+          name: download-container 9
           command: |
             pwd
             cd /home/circleci/project/.circleci/dockerstuff
