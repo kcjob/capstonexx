@@ -7,7 +7,7 @@ orbs:
 jobs:
   minikube-setup:
     machine:
-      image: cimg/base:stable-18.04
+      image: cimg/base
     working_directory: ~/project
     steps:
       - checkout
