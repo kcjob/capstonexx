@@ -1,8 +1,23 @@
 version: 2.1
 orbs:
   slack: circleci/slack@4.1
+  aws-eks: circleci/aws-eks@x.y
+  kubernetes: circleci/kubernetes@0.4.0
 
 jobs:
+  minkube-setup:
+    machine:
+      - image: cimg/base:edge-18.04
+    steps:
+      - checkout
+      -run:
+        run: install dependencies
+        command: |
+          sudo apt update
+          pwd
+          ls -la
+
+
 #----------- Job 1 ----------------
   linting:
     docker:
@@ -146,7 +161,8 @@ jobs:
 workflows:
   default:
     jobs:
+
       #- linting
       #- create-docker
       #- create-server
-      - run-app
+      #- run-app
