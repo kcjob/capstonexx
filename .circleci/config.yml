@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: install update OS 
+          name: install update OS
           command: |
             sudo apt update
       - run:
@@ -30,6 +30,7 @@ jobs:
             minikube addons enable registry
       - run:
           name: test kube
+          no_output_timeout: 10m
           command: kubectl config view
       - run:
           name: download-container
@@ -41,7 +42,12 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
-
+      - run:
+          name: run app
+          no_output_timeout: 10m
+          command: |
+            pwd
+            kubectl port-forward pod/capstone --address 0.0.0.0 8000:8000
 
 #----------- Job 1 ----------------
   linting:
@@ -99,6 +105,7 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
+
 
 #--------------- Job 2 ------------------
 
