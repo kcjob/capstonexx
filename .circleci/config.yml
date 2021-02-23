@@ -30,10 +30,10 @@ jobs:
             minikube addons enable registry
       - run:
           name: test kube
-          no_output_timeout: 20m
           command: kubectl config view
       - run:
           name: download-container
+          no_output_timeout: 20m
           command: |
             pwd
             cd /home/circleci/project/.circleci/dockerstuff
