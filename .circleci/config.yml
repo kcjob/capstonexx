@@ -28,6 +28,9 @@ jobs:
           command: |
             minikube start --vm-driver=docker --kubernetes-version=v1.19.0
             minikube addons enable registry
+      - run:
+          name: test kube
+          command: kubectl config view
 
 #----------- Job 1 ----------------
   linting:
