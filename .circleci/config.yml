@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: install dependencies
+          name: install update OS 
           command: |
             sudo apt update
       - run:
