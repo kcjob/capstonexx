@@ -8,13 +8,13 @@ jobs:
   minikube-setup:
     machine:
       image: ubuntu-2004:202010-01
-    working_directory: ~/
+
     steps:
       - checkout
       - run:
           name: install dependencies
           command: |
-            sudo apt update
+#            sudo apt update
             pwd
             ls -la
 
