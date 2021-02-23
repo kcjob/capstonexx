@@ -11,8 +11,6 @@ jobs:
 #      working_directory: ~/project
     steps:
       - checkout
-      - restore_cache:
-          keys: [kube-build]
       - run:
           name: install update OS
           command: |
@@ -31,25 +29,12 @@ jobs:
           command: |
             minikube start --vm-driver=docker --kubernetes-version=v1.19.0
             minikube addons enable registry
-      - save_cache:
-          paths:
-            - ~/project
-          key: kube-build
 
-#-------------------------------------
-  kube-setup:
-    machine:
-      image: ubuntu-2004:202010-01
-    steps:
-      - checkout
-      - restore_cache:
-          keys: [kube-build]
       - run:
           name: test kube
           command: kubectl config view
       - run:
           name: download-container
-          no_output_timeout: 20m
           command: |
             pwd
             cd /home/circleci/project/.circleci/dockerstuff
@@ -60,96 +45,9 @@ jobs:
           template: basic_fail_1
       - run:
           name: run app
-          no_output_timeout: 30m
           command: |
             pwd
             kubectl port-forward pod/capstone --address 0.0.0.0 8000:8000
-
-#----------- Job 1 ----------------
-  linting:
-    docker:
-      - image: python:3.7.3-stretch
-
-    working_directory: ~/project
-
-    steps:
-      - checkout
-
-      - run:
-          name: checking paths
-          command: |
-            echo 'path is:' ${pwd}
-            echo 'the path is:'
-            pwd
-            ls -la
-            ls -la ~/project/.circleci/dockerstuff
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "~/project/.circleci/dockerstuff/requirements.txt" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run:
-          name: install dependencies
-          command: |
-            cd ~/project/.circleci/dockerstuff
-            python3 -m venv venv
-            ls -l venv
-            ls -l venv/bin
-            . venv/bin/activate
-            apt-get -y install make
-            make --version
-            # Install hadolint
-            wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
-              chmod +x /bin/hadolint
-
-      - save_cache:
-            paths:
-              - ./venv
-            key: v1-dependencies-{{ checksum "~/project/.circleci/dockerstuff/requirements.txt" }}
-
-      # run lint!
-      - run:
-          name: Run lint
-          command: |
-            cd ~/project/.circleci/dockerstuff
-            . venv/bin/activate
-            make install
-            make lint
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-
-
-#--------------- Job 2 ------------------
-
-  create-docker:
-    machine: true
-    steps:
-      - checkout
-      - run:
-          name: build docker image
-          command: |
-            cd ~/project/.circleci/dockerstuff
-            sh run_docker.sh
-      - run:
-          name: get docker container ID
-          command: |
-            docker ps -aq
-      - run:
-          name: commit container to Docker Repo
-          command: |
-            docker container commit $(docker ps -qa) joepub/capstone
-      - run:
-          name: Upload to repo
-          command: |
-            echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
-            docker push joepub/capstone
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
 
 #---------------------- job ?? --------------------------
   run-app:
@@ -166,53 +64,13 @@ jobs:
           event: fail
           template: basic_fail_1
 
-#----------------------- job 3 --------------------------
-
-  create-server:
-    docker:
-      - image: python:3.7-alpine3.11
-    steps:
-      - checkout
-
-      - add_ssh_keys:
-          fingerprints: ["a3:27:68:1c:b4:68:20:dd:2a:d7:5e:79:3d:06:77:46"]
-
-      - attach_workspace:
-          at: ~/project/
-
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible
-            pip install awscli
-            #ls -la ~/project
-            #ls -la ~/project/.circleci/ansible
-            #cat ~/project/.circleci/ansible/inventory.txt
-
-      - run:
-          name: configure server
-          command: |
-            cd ~/project/.circleci/ansible
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=uda-capstone" --region=us-east-1 --output text >> inventory.txt >> inventory.txt
-            cat inventory.txt
-
-            ansible-playbook -i inventory.txt server-setup.yml
-
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-
-
 #---------------------- Job ??--------------
 
 
 workflows:
   default:
     jobs:
-      - minikube-setup
-      - kube-setup
-
-      #- linting
-      #- create-docker
-      #- create-server
-      #- run-app
+      - minikube-setup:
+          filters:
+            branches:
+              only: minikube
