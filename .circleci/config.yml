@@ -8,8 +8,11 @@ jobs:
   minikube-setup:
     machine:
       image: ubuntu-2004:202010-01
+#      working_directory: ~/project
     steps:
       - checkout
+      - restore_cache:
+          keys: [kube-build]
       - run:
           name: install update OS
           command: |
@@ -28,6 +31,19 @@ jobs:
           command: |
             minikube start --vm-driver=docker --kubernetes-version=v1.19.0
             minikube addons enable registry
+      - save_cache:
+          paths:
+            - ~/project
+          key: kube-build
+
+#-------------------------------------
+  kube-setup:
+    machine:
+      image: ubuntu-2004:202010-01
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [kube-build]
       - run:
           name: test kube
           command: kubectl config view
