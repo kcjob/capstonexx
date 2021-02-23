@@ -8,7 +8,7 @@ jobs:
   minikube-setup:
     machine:
       image: ubuntu-2004:202010-01
-    working_directory: ~/project
+    working_directory: ~/
     steps:
       - checkout
       - run:
