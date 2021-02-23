@@ -6,7 +6,6 @@
 # This is your Docker ID/path
 dockerpath=joepub/api
 
-
 # Step 2
 # Run the Docker Hub container with kubernetes
 kubectl run capstone --image=docker.io/joepub/capstone --port=8000
