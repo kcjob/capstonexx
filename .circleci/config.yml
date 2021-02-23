@@ -13,8 +13,8 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            pwd
-            ls -la
+            minikube start --vm-driver=docker --kubernetes-version=v1.19.0	            minikube start --vm-driver=docker --kubernetes-version=v1.19.0
+            minikube addons enable registry	            minikube addons enable registry
 
 
 #----------- Job 1 ----------------
