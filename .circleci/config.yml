@@ -81,7 +81,7 @@ jobs:
 
 #--------------- Job 2 ------------------
 
-  deploy-infrastructure:
+  create-infrastructure:
     docker:
       - image: amazon/aws-cli
 
@@ -92,7 +92,7 @@ jobs:
       - run: yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm jq
 
       - run:
-          name: Ensure back-end infrastructure exists
+          name: Ensure server infrastructure exists
           command: |
             pwd
             aws cloudformation deploy \
@@ -103,7 +103,7 @@ jobs:
             --region=us-east-1
 
       - run:
-          name: Add server ip to ansible inventory
+          name: Add server ip to ansible inventory files
           command: |
             cd ~/project/.circleci/ansible/
             ls -la
@@ -119,8 +119,42 @@ jobs:
           command: |
             curl -H "Content-Type: text/plain" -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$serverIP" https://api.memstash.io/values/serverip
             cat ~/project/.circleci/ansible/inventory.txt
-            pwd
 
+      - destroy-environment
+
+#------------------------------------------
+
+  deploy-minikube-and-kubectl:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["a3:27:68:1c:b4:68:20:dd:2a:d7:5e:79:3d:06:77:46"]
+
+      - attach_workspace:
+          at: ~/project/
+
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible
+            pip install awscli
+
+      - run:
+          name: Deploy minikube
+          command: |
+            cd ~/project/.circleci/ansible
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=uda-capstone" --region=us-east-1 --output text >> inventory.txt >> inventory.txt
+            cat inventory.txt
+
+            ansible-playbook -i inventory.txt server-setup.yml
+
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+
+      # Here's where you will add some code to rollback on failure
       - destroy-environment
 
 #---------------------- Job ??--------------
@@ -129,7 +163,8 @@ jobs:
 workflows:
   default:
     jobs:
-      - deploy-infrastructure
+      - create-infrastructure
+      - deploy-minikube-and-kubectl
 
       #- linting
       #- create-docker
