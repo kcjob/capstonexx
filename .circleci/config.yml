@@ -117,7 +117,8 @@ jobs:
       - run:
           name: Store server ID
           command: |
-            curl -H "Content-Type: text/plain" -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$serverip" https://api.memstash.io/values/serverip
+            curl -H "Content-Type: text/plain" -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request PUT --data "" https://api.memstash.io/values/serverip
+
             cat ~/project/.circleci/ansible/inventory.txt
 
       - destroy-environment
@@ -151,7 +152,7 @@ jobs:
             SERVERIP=$(curl -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/serverip)
             echo "the id is: " $SERVERIP
 
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=server-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
+#            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=server-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
 
 #            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=server-${CIRCLE_WORKFLOW_ID:0:7}" --region=us-east-1 --output text >> inventory.txt >> inventory.txt
 #            cat inventory.txt
