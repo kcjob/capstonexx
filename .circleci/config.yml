@@ -92,20 +92,12 @@ jobs:
 
             echo $SERVER_IP >> inventory.txt
             cat inventory.txt
-            ls -la ~/project/server
-            cp inventory.txt ~/project/backend
-            ls  -la ~/project/backend
-
-      - persist_to_workspace:
-          root: ~/project/backend
-          paths:
-            - inventory.txt
 
       #Store
       - run:
-          name: Backend ID
+          name: Store server ID
           command: |
-            curl -H "Content-Type: text/plain" -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$serverIP" https://api.memstash.io/values/backendip
+            curl -H "Content-Type: text/plain" -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$serverIP" https://api.memstash.io/values/serverip
             cat ~/project/.circleci/ansible/inventory.txt
             pwd
 
