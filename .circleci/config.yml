@@ -113,6 +113,8 @@ jobs:
             echo $SERVER_IP >> inventory.txt
             cat inventory.txt
 
+            curl -H "Content-Type: text/plain" -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$SERVER_IP" https://api.memstash.io/values/serverip
+
       #Store
       - run:
           name: Store server ID
@@ -120,7 +122,6 @@ jobs:
 
             echo $SERVER_IP
 
-            curl -H "Content-Type: text/plain" -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$SERVER_IP" https://api.memstash.io/values/serverip
 
             echo $(curl -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/serverip)
 
