@@ -156,7 +156,7 @@ jobs:
 
             SERVERIP=$(curl -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/serverip)
             echo "the id is: " $SERVERIP
-            $SERVERIP >> inventory.txt
+            echo $SERVERIP >> inventory.txt
 
             ansible-playbook -i inventory.txt server-setup.yml
 
