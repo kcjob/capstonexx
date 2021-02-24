@@ -108,7 +108,7 @@ jobs:
             cd ~/project/.circleci/ansible/
             ls -la
 
-            SERVER_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=uda-capstone" --output text)
+            SERVER_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=server-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
 
             echo $SERVER_IP >> inventory.txt
             cat inventory.txt
@@ -120,6 +120,8 @@ jobs:
             curl -H "Content-Type: text/plain" -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$serverIP" https://api.memstash.io/values/serverip
             cat ~/project/.circleci/ansible/inventory.txt
             pwd
+
+      - destroy-environment
 
 #---------------------- Job ??--------------
 
