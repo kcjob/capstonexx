@@ -62,83 +62,52 @@ jobs:
 
 #--------------- Job 2 ------------------
 
-  create-docker:
-    machine: true
-    steps:
-      - checkout
-      - run:
-          name: build docker image
-          command: |
-            cd ~/project/.circleci/dockerstuff
-            sh run_docker.sh
-      - run:
-          name: get docker container ID
-          command: |
-            docker ps -aq
-      - run:
-          name: commit container to Docker Repo
-          command: |
-            docker container commit $(docker ps -qa) joepub/capstone
-      - run:
-          name: Upload to repo
-          command: |
-            echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
-            docker push joepub/capstone
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-
-#---------------------- job ?? --------------------------
-  run-app:
-    machine: true
-    steps:
-      - checkout
-      - run:
-          name: download-container
-          command: |
-            cd ~/project/.circleci/dockerstuff
-            ls -la
-            sh run_k8s.sh
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-
-#----------------------- job 3 --------------------------
-
-  create-server:
+  deploy-infrastructure:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: amazon/aws-cli
+
     steps:
       - checkout
 
-      - add_ssh_keys:
-          fingerprints: ["a3:27:68:1c:b4:68:20:dd:2a:d7:5e:79:3d:06:77:46"]
-
-      - attach_workspace:
-          at: ~/project/
+      - run: yum -y install tar gzip jq npm
+      - run: yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm jq
 
       - run:
-          name: Install dependencies
+          name: Ensure back-end infrastructure exists
           command: |
-            apk add --update ansible
-            pip install awscli
-            #ls -la ~/project
-            #ls -la ~/project/.circleci/ansible
-            #cat ~/project/.circleci/ansible/inventory.txt
+            pwd
+            aws cloudformation deploy \
+            --template-file .circleci/files/server.yml \
+            --tags Name=uda-capstone \
+            --stack-name "server-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
+            --region=us-east-1
 
       - run:
-          name: configure server
+          name: Add server ip to ansible inventory
           command: |
-            cd ~/project/.circleci/ansible
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=uda-capstone" --region=us-east-1 --output text >> inventory.txt >> inventory.txt
+            cd ~/project/.circleci/ansible/
+
+            SERVER_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=uda-capstone" --output text)
+
+            echo $SERVER_IP >> inventory.txt
             cat inventory.txt
+            ls -la ~/project/server
+            cp inventory.txt ~/project/backend
+            ls  -la ~/project/backend
 
-            ansible-playbook -i inventory.txt server-setup.yml
+      - persist_to_workspace:
+          root: ~/project/backend
+          paths:
+            - inventory.txt
 
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-
+      #Store
+      - run:
+          name: Backend ID
+          command: |
+            curl -H "Content-Type: text/plain" -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$serverIP" https://api.memstash.io/values/backendip
+            cat ~/project/.circleci/ansible/inventory.txt
+            pwd
 
 #---------------------- Job ??--------------
 
@@ -146,7 +115,9 @@ jobs:
 workflows:
   default:
     jobs:
+      - deploy-infrastructure
+
       #- linting
       #- create-docker
       #- create-server
-      - run-app
+      #- run-app
