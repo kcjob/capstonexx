@@ -103,6 +103,7 @@ jobs:
           name: run app
           command: |
             pwd
+            sleep 3m
             kubectl port-forward pod/capstone --address 0.0.0.0 8000:8000
 
 #---------------------- job ?? --------------------------
