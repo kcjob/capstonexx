@@ -117,7 +117,7 @@ jobs:
       - run:
           name: Store server ID
           command: |
-            curl -H "Content-Type: text/plain" -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$serverIP" https://api.memstash.io/values/serverip
+            curl -H "Content-Type: text/plain" -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$serverip" https://api.memstash.io/values/serverip
             cat ~/project/.circleci/ansible/inventory.txt
 
       - destroy-environment
