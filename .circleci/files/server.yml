@@ -32,4 +32,4 @@ Resources:
       ImageId: ami-02fe94dee086c0c37
       Tags:
         - Key: Name
-          Value: !Sub backend-${ID}
+          Value: !Sub server-${ID}
