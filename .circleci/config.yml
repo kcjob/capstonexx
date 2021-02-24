@@ -2,6 +2,25 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.1
 
+commands:
+  destroy-environment:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    parameters:
+      # Add parameter here
+      server:
+        default: "server-${CIRCLE_WORKFLOW_ID:0:7}"
+        type: string
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            #aws --version
+            echo "DESTROY STACKS"
+            aws cloudformation delete-stack --stack-name server-${CIRCLE_WORKFLOW_ID:0:7}
+            echo "${CIRCLE_WORKFLOW_ID:0:7}"
+            echo "Destroyed ?????"
+            #exit 1
 jobs:
 #----------- Job 1 ----------------
   linting:
@@ -87,6 +106,7 @@ jobs:
           name: Add server ip to ansible inventory
           command: |
             cd ~/project/.circleci/ansible/
+            ls -la
 
             SERVER_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=uda-capstone" --output text)
 
