@@ -28,8 +28,8 @@ Resources:
       InstanceType: t2.micro
       SecurityGroups:
         - Ref: InstanceSecurityGroup
-      KeyName: uda-capstone 
-      ImageId: ami-07a29e5e945228fa1
+      KeyName: uda-capstone
+      ImageId: ami-02fe94dee086c0c37
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
