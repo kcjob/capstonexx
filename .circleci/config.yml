@@ -158,7 +158,7 @@ jobs:
             echo "the id is: " $SERVERIP
             echo $SERVERIP >> inventory.txt
 
-            ansible-playbook -i inventory.txt server-setup.yml
+            ansible-playbook -i inventory.txt deploy-server.yml
 
       - slack/notify:
           event: fail
