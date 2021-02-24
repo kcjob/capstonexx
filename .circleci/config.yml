@@ -122,9 +122,7 @@ jobs:
 
             echo $SERVER_IP
 
-
-            echo $(curl -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/serverip)
-
+            curl -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/serverip
 
             cat ~/project/.circleci/ansible/inventory.txt
 
