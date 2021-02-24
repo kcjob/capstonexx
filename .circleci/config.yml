@@ -179,7 +179,7 @@ workflows:
   default:
     jobs:
       - create-infrastructure
-#      - deploy-minikube-and-kubectl:
+      - deploy-minikube-and-kubectl:
 #          requires: [create-infrastructure]
 
       #- linting
