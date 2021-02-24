@@ -165,7 +165,7 @@ workflows:
     jobs:
       - create-infrastructure
       - deploy-minikube-and-kubectl:
-          requires [create-infrastructure]
+          requires: [create-infrastructure]
 
       #- linting
       #- create-docker
