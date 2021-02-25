@@ -1,68 +1,27 @@
 version: 2.1
-jobs:
-  configure-infrastructure:
-    docker:
-      - image: python:3.7-alpine3.11
+orbs:
+  aws-eks: circleci/aws-eks@1.0.3
+  kubernetes: circleci/kubernetes@0.4.0
+
+  jobs:
+  test-cluster:
+    executor: aws-eks/python3
+    parameters:
+      demo-cluster:
+        description: |
+          demo cluster setup
+        type: string
     steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints: ["a3:27:68:1c:b4:68:20:dd:2a:d7:5e:79:3d:06:77:46"]
-
-      - attach_workspace:
-          at: ~/project/
-
+      - kubernetes/install
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: << parameters.demo-cluster >>
       - run:
-          name: Install dependencies
           command: |
-            apk add --update ansible
-            pip install awscli
-            ls -la ~/project
-            ls -la ~/project/.circleci/ansible
-            cat ~/project/.circleci/ansible/inventory.txt
-
-      - run:
-          name: configure server
-          command: |
-            cd ~/project/.circleci/ansible
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=uda-capstone" --region=us-east-1 --output text >> inventory.txt >> inventory.txt
-            cat inventory.txt
-
-            ansible-playbook -i inventory.txt server-setup.yml
-            #exit 1
-
-
-
-
-  create-docker:
-    machine: true
-    steps:
-      - checkout
-      - run:
-          name: build docker image
-          command: |
-            pwd
-            ls -al
-            cd ~/project/.circleci/dockerstuff
-            ls -la
-            sh run_docker.sh
-      - run:
-          name: get docker container ID
-          command: |
-            docker ps -aq
-      - run:
-          name: commit container
-          command: |
-            docker container commit $(docker ps -qa) joepub/capstone
-      - run:
-          name: Upload to repo
-          command: |
-            echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
-            docker push joepub/capstone
-
-
+            name: Test cluster
+            kubectl get services
 
 
 workflows:
   default:
     jobs:
-      - configure-infrastructure
+      - test-cluster
