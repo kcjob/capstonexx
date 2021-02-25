@@ -40,7 +40,7 @@ jobs:
           command: |
             hostname -I
             sudo ufw allow 8001/tcp
-            netstat -tlpen | grep 8000
+            sudo netstat -tlpen | grep 8000
 
             pwd
             cd /home/circleci/project/.circleci/dockerstuff
