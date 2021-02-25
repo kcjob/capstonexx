@@ -6,7 +6,7 @@ orbs:
 
 jobs:
   eks-install:
-   machine:
+    machine:
       image: ubuntu-2004:202010-01
     steps:
       - checkout
@@ -17,9 +17,9 @@ jobs:
           command: |
             sudo apt update -y
             sudo apt install -y apt-utils
-            sudo apt add curl
+            sudo apt install curl -y
             sudo pip install awscli
-            sudo apt install ansible
+            #sudo apt install ansible -y
             cd ~/project/.circleci/ansible
             ls -la
 
