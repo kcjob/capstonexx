@@ -24,8 +24,9 @@
     curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
     sudo mv /tmp/eksctl /usr/local/bin
     ls -l
-    sudo /usr/local/bin/eksctl 
+    #sudo /usr/local/bin/eksctl 
 
+    sudo eksctl create cluster --version 1.17 --name demo-cluster --region us-east-1 --nodegroup-name linux-nodes --node-type t2.micro --nodes 2
 #- name: Download eksctl using get_url
 #  become: yes
 #  get_url:
