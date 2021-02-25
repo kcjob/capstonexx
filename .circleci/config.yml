@@ -27,7 +27,7 @@ jobs:
             sudo mv /tmp/eksctl /usr/local/bin
             sudo eksctl version
 
-            #sudo eksctl create cluster --version 1.17 --name demo-cluster --region us-east-1 --nodegroup name linux-nodes --node-type t2.micro --nodes 2
+            sudo eksctl create cluster #--version 1.17 --name demo-cluster --region us-east-1 --nodegroup #name linux-nodes --node-type t2.micro --nodes 2
 
             #ansible-playbook configure-eks-server.yml
 
