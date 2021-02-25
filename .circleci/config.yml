@@ -15,6 +15,7 @@ jobs:
           name: install update OS
           command: |
             sudo apt update
+            sudo apt install net-tools
             hostname -I
       - run:
           name: install minikube
