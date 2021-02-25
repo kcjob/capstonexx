@@ -14,6 +14,7 @@ jobs:
       - run:
           name: install eksctl
           command: |
+            app install ansible
             cd ~/project/.circleci/ansible
             ls -la
 
