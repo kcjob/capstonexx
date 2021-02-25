@@ -6,7 +6,8 @@ orbs:
 
 jobs:
   eks-install:
-    executor: aws-eks/python3
+   machine:
+      image: ubuntu-2004:202010-01
     steps:
       - checkout
       - add_ssh_keys:
@@ -14,8 +15,10 @@ jobs:
       - run:
           name: install eksctl
           command: |
-            sudo apt-get update -y
-            sudo apt-get install -y apt-utils
+            sudo apt update -y
+            sudo apt install -y apt-utils
+            sudo apt add curl
+            sudo pip install awscli
             sudo apt install ansible
             cd ~/project/.circleci/ansible
             ls -la
