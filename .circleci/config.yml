@@ -15,6 +15,7 @@ jobs:
           name: install update OS
           command: |
             sudo apt update
+            hostname -I
       - run:
           name: install minikube
           command: |
@@ -37,6 +38,9 @@ jobs:
           name: download-container
           command: |
             hostname -I
+            sudo ufw allow 8001/tcp
+            netstat -tlpen | grep 8000
+
             pwd
             cd /home/circleci/project/.circleci/dockerstuff
             ls -la
@@ -49,7 +53,7 @@ jobs:
           command: |
             pwd
             sleep 3m
-            kubectl port-forward pod/capstone --address 0.0.0.0 8000:8000
+            #kubectl port-forward pod/capstone --address 0.0.0.0 8000:8000
 
 #---------------------- job ?? --------------------------
   run-app:
