@@ -1,36 +1,29 @@
 version: 2.1
 orbs:
   aws-eks: circleci/aws-eks@1.0.3
+  aws-ecr: circleci/aws-ecr@3.1.0
   kubernetes: circleci/kubernetes@0.4.0
 
 jobs:
-  test-cluster:
+  eks-install:
     executor: aws-eks/python3
-    parameters:
-      cluster-name:
-        description: |
-          demo cluster setup
-        type: string
     steps:
-      - kubernetes/install
-      - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: << parameters.cluster-name >>
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["a3:27:68:1c:b4:68:20:dd:2a:d7:5e:79:3d:06:77:46"]
       - run:
+          name: install eksctl
           command: |
-            name: Test cluster
-            kubectl get services
+            cd ~/project/.circleci/ansible
+            ls -la
+
+            ansible-playbook configure-eks-server.yml
+
+
+#            kubectl get services
 
 
 workflows:
   deployment:
     jobs:
-      - aws-eks/create-cluster:
-          cluster-name: my-eks-demo
-      - test-cluster:
-          cluster-name: my-eks-demo
-          requires:
-            - aws-eks/create-cluster
-      - aws-eks/delete-cluster:
-          cluster-name: my-eks-demo
-          requires:
-            - test-cluster
+      - eks-install

@@ -25,5 +25,5 @@
       # Your code here
 
   roles:
-    - configure-server
+    - configure-eks
     #- configure-prometheus-node-exporter
