@@ -14,6 +14,8 @@ jobs:
       - run:
           name: install eksctl
           command: |
+            sudo apt-get update -y
+            sudo apt-get install -y apt-utils
             sudo apt install ansible
             cd ~/project/.circleci/ansible
             ls -la
