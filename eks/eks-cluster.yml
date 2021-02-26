@@ -1,0 +1,40 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: capstone
+  region: us-east-1
+  version: '1.18'
+
+vpc:
+  cidr: 10.42.0.0/16
+  nat:
+    gateway: Single
+  clusterEndpoints:
+    publicAccess: true
+    privateAccess: false
+
+nodeGroups:
+  - name: ng-1
+    amiFamily: ubuntu
+    ami: ami-03d315ad33b9d49c4  # AMI is specific for a region
+    instanceType: t2.micro
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 3
+
+    # Worker nodes won't have an access FROM the Internet
+    # But have an access TO the Internet through NAT-gateway
+    privateNetworking: true
+
+    # We don't need to SSH to nodes for demo
+    ssh:
+      allow: false
+
+    # Labels are Kubernetes labels, shown when 'kubectl get nodes --show-labels'
+    labels:
+      role: eks-capstone
+    # Tags are AWS tags, shown in 'Tags' tab on AWS console'
+    tags:
+      role: eks-capstone
+availabilityZones: ['us-east-1a', 'us-east-1b', 'us-east-1c', 'us-east-1d']

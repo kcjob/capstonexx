@@ -46,13 +46,13 @@ jobs:
           resource-file-path: "k8s/deployment.yaml"
           show-kubectl-command: true
           get-rollout-status: true
-          resource-name: deployment/iris-rest
-          namespace: iris
-      - kubernetes/create-or-update-resource:
-          action-type: apply
-          resource-file-path: "k8s/service.yaml"
-          show-kubectl-command: true
-          namespace: iris
+          resource-name: deployment/capstone
+          namespace: capstone
+#      - kubernetes/create-or-update-resource:
+#          action-type: apply
+#          resource-file-path: "k8s/service.yaml"
+#          show-kubectl-command: true
+#          namespace: capstone
 workflows:
   main:
     jobs:
@@ -61,14 +61,14 @@ workflows:
         aws-secret-access-key: AWS_SECRET_ACCESS_KEY
         region: AWS_REGION
         account-url: AWS_ECR_ACCOUNT_URL
-        repo: iris-rest
+        repo: capstone
         create-repo: true
-        dockerfile: Dockerfile-zpm
+        dockerfile: Dockerfile
         path: .
         tag: ${CIRCLE_SHA1}
     - deploy-application:
-        cluster-name: dev-cluster
-        aws-region: eu-west-1
+        cluster-name: capstone
+        aws-region: us-east-1
         account-url: ${AWS_ECR_ACCOUNT_URL}
         tag: ${CIRCLE_SHA1}
         requires:

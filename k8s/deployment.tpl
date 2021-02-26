@@ -16,7 +16,7 @@ spec:
         app: webapp
     spec:
       containers:
-      - image: joepub/hello:latest
+      - image: capstone/hello:latest
         ports:
         - containerPort: 8000
           name: webapp
