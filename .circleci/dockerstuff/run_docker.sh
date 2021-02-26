@@ -8,7 +8,7 @@ docker rm $(docker ps -a -f status=exited -q)
 
 #Step 2:
 # Build image and add a descriptive tag
-docker build --tag=hello .
+docker build --tag=capstone .
 
 # Step 3:
 # List docker images
