@@ -5,7 +5,7 @@ orbs:
   kubernetes: circleci/kubernetes@0.11.2
 
 jobs:
-  create-eksctl-eck-cluster:
+  check-cluster:
     executor: aws-eks/python3
     parameters:
       cluster-name:
@@ -75,7 +75,7 @@ workflows:
     jobs:
       - aws-eks/create-cluster:
           cluster-name: capstone
-      - create-eksctl-eck-cluster:
+      - check-cluster:
           cluster-name: capstone
           requires:
             - aws-eks/create-cluster
