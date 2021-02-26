@@ -16,4 +16,4 @@ docker image ls
 
 # Step 4:
 # Run flask_app
-docker run --name capstone -p 8000:8000  -p 50000:50000 hello
+#docker run --name capstone -p 8000:8000  -p 50000:50000 hello
