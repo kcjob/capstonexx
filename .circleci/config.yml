@@ -64,36 +64,37 @@ jobs:
           get-rollout-status: true
           resource-name: deployment/capstone
           namespace: capstone
-#      - kubernetes/create-or-update-resource:
-#          action-type: apply
-#          resource-file-path: "k8s/service.yaml"
-#          show-kubectl-command: true
-#          namespace: capstone
+      #- kubernetes/create-or-update-resource:
+      #    action-type: apply
+      #    resource-file-path: "k8s/service.yaml"
+      #    show-kubectl-command: true
+      #    namespace: capstone
+
 workflows:
   main:
     jobs:
-    - aws-eks/create-cluster:
-        cluster-name: capstone
-    - test-cluster:
-        cluster-name: test-cluster
-        requires:
-          - aws-eks/create-cluster
-    - aws-ecr/build-and-push-image:
-        aws-access-key-id: AWS_ACCESS_KEY_ID
-        aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-        region: AWS_DEFAULT_REGION
-        account-url: AWS_ECR_ACCOUNT_URL
-        repo: capstone
-        create-repo: true
-        dockerfile: Dockerfile
-        path: .circleci/dockerstuff
-        tag: ${CIRCLE_SHA1}
-        requires:
-          - aws-eks/create-cluster
-    - deploy-application:
-        cluster-name: capstone
-        aws-region: us-east-1
-        account-url: ${AWS_ECR_ACCOUNT_URL}
-        tag: ${CIRCLE_SHA1}
-        requires:
-          - aws-ecr/build-and-push-image
+      - aws-eks/create-cluster:
+          cluster-name: capstone
+      - create-eksctl-eck-cluster:
+          cluster-name: capstone
+          requires:
+            - aws-eks/create-cluster
+      - aws-ecr/build-and-push-image:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          region: AWS_DEFAULT_REGION
+          account-url: AWS_ECR_ACCOUNT_URL
+          repo: capstone
+          create-repo: true
+          dockerfile: Dockerfile
+          path: .circleci/dockerstuff
+          tag: ${CIRCLE_SHA1}
+          requires:
+            - aws-eks/create-cluster
+      - deploy-application:
+          cluster-name: capstone
+          aws-region: us-east-1
+          account-url: ${AWS_ECR_ACCOUNT_URL}
+          tag: ${CIRCLE_SHA1}
+          requires:
+            - aws-ecr/build-and-push-image
