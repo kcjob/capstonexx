@@ -64,7 +64,7 @@ workflows:
         repo: capstone
         create-repo: true
         dockerfile: Dockerfile
-        path: dockerstuff/
+        path: dockerstuff
         tag: ${CIRCLE_SHA1}
     - deploy-application:
         cluster-name: capstone
