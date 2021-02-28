@@ -14,7 +14,7 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["a3:27:68:1c:b4:68:20:dd:2a:d7:5e:79:3d:06:77:46"]
       - run:
-          name: install eksctl and kubectl
+          name: install eksctl
           command: |
             curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
             sudo mv /tmp/eksctl /usr/local/bin
@@ -28,17 +28,16 @@ jobs:
           name: create cluster
           command: |
             pwd
-            ls -la ~/project/k8s
+            #ls -la ~/project/k8s
             cd ~/project/eks
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             aws configure set role_arn $ROLE_ARN --profile circleci
-            aws eks update-kubeconfig --name capstone --region us-east-1
 
             eksctl create cluster --name capstone --version 1.16 --nodegroup-name standard-workers --node-type t2.micro --nodes 3 --nodes-min 1 --nodes-max 4 --node-ami auto --region us-east-1 --zones us-east-1a,us-east-1b,us-east-1c
 
             aws eks update-kubeconfig --name capstone --region us-east-1
-             kubectl get nodes
+            kubectl get nodes
 
       - run:
           name: delete cluster
@@ -46,7 +45,7 @@ jobs:
             #sudo eksctl delete cluster --name capstone --region us-east-1
             echo
 
-#            kubectl get services
+            kubectl get services
 
   check-cluster:
     executor: aws-eks/python3
