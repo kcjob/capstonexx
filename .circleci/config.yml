@@ -35,10 +35,6 @@ jobs:
             aws configure set role_arn $ROLE_ARN --profile circleci
 
             eksctl create cluster --name capstone --version 1.16 --nodegroup-name standard-workers --node-type t2.micro --nodes 3 --nodes-min 1 --nodes-max 4 --node-ami auto --region us-east-1 --zones us-east-1a,us-east-1b,us-east-1c
-
-            aws eks update-kubeconfig --name capstone --region us-east-1
-            kubectl get nodes
-
       - run:
           name: delete cluster
           command: |
@@ -59,9 +55,11 @@ jobs:
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: << parameters.cluster-name >>
       - run:
-          name: test-cluster
+          name: capstone
           command: |
             kubectl get services
+            #aws eks update-kubeconfig --name capstone --region us-east-1
+            kubectl get nodes
 
   deploy-application:
     executor: aws-eks/python3
@@ -116,29 +114,26 @@ jobs:
 workflows:
   main:
     jobs:
-      - eksctl-install
-#      - aws-eks/create-cluster:
-#          cluster-name: capstone
-#      - check-cluster:
-#          cluster-name: capstone
-#          requires:
-#            - aws-eks/create-cluster
-      - aws-ecr/build-and-push-image:
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          region: AWS_DEFAULT_REGION
-          account-url: AWS_ECR_ACCOUNT_URL
-          repo: capstone
-          create-repo: true
-          dockerfile: Dockerfile
-          path: .circleci/dockerstuff
-          tag: ${CIRCLE_SHA1}
-          requires:
-            - eksctl-install
-      - deploy-application:
-          cluster-name: capstone
-          aws-region: us-east-1
-          account-url: ${AWS_ECR_ACCOUNT_URL}
-          tag: ${CIRCLE_SHA1}
-          requires:
-            - aws-ecr/build-and-push-image
+      #- eksctl-install
+      - check-cluster:
+      #    requires:
+      #      - eksctl-install
+      #- aws-ecr/build-and-push-image:
+      #    aws-access-key-id: AWS_ACCESS_KEY_ID
+      #    aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      #    region: AWS_DEFAULT_REGION
+      #    account-url: AWS_ECR_ACCOUNT_URL
+      #    repo: capstone
+      #    create-repo: true
+      #    dockerfile: Dockerfile
+      #    path: .circleci/dockerstuff
+      #    tag: ${CIRCLE_SHA1}
+      #    requires:
+      #      - eksctl-install
+      #- deploy-application:
+      #    cluster-name: capstone
+      #    aws-region: us-east-1
+      #    account-url: ${AWS_ECR_ACCOUNT_URL}
+      #    tag: ${CIRCLE_SHA1}
+      #    requires:
+      #      - aws-ecr/build-and-push-image
