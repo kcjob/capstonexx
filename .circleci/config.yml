@@ -14,11 +14,16 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["a3:27:68:1c:b4:68:20:dd:2a:d7:5e:79:3d:06:77:46"]
       - run:
-          name: install eksctl
+          name: install eksctl and kubectl
           command: |
             curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
             sudo mv /tmp/eksctl /usr/local/bin
             echo "eksctl version: " $(sudo eksctl version)
+      - run:
+          name: install kubectl
+          command: |
+            curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.19.0/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+            kubectl version --short --client
       - run:
           name: create cluster
           command: |
@@ -80,6 +85,7 @@ jobs:
       - run:
           name: Replace placeholders with values in deployment template
           command: |
+            pwd
             cat k8s/deployment.tpl |\
             sed "s|DOCKER_REPO_NAME|<< parameters.account-url >>|" |\
             sed "s|DOCKER_IMAGE_TAG|<< parameters.tag >>|" > k8s/deployment.yaml; \
@@ -90,7 +96,7 @@ jobs:
           aws-region: << parameters.aws-region >>
       - kubernetes/create-or-update-resource:
           action-type: apply
-          resource-file-path: "k8s/namespace.yaml"
+          resource-file-path: "namespace.yaml"
           show-kubectl-command: true
       - kubernetes/create-or-update-resource:
           action-type: apply
