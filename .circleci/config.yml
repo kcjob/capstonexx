@@ -6,7 +6,9 @@ orbs:
 
 jobs:
   eksctl-install:
-    executor: aws-eks/python3
+    #executor: aws-eks/python3
+    machine: true
+
     steps:
       - checkout
       - add_ssh_keys:
