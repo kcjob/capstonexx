@@ -117,8 +117,8 @@ workflows:
       #- eksctl-install
       - check-cluster:
           cluster-name: capstone
-          requires:
-            - eksctl-install
+          #requires:
+          #  - eksctl-install
       - aws-ecr/build-and-push-image:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
@@ -130,7 +130,7 @@ workflows:
           path: .circleci/dockerstuff
           tag: ${CIRCLE_SHA1}
           requires:
-            - eksctl-install
+            - check-cluster 
       - deploy-application:
           cluster-name: capstone
           aws-region: us-east-1
