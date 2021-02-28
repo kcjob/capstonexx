@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: iris-rest
-  namespace: iris
+  name: capstone
+  namespace: capstone
 spec:
   selector:
-    app: iris
+    app: webapp
   ports:
   - protocol: TCP
-    port: 52773
-    targetPort: 52773
+    port: 8000
+    targetPort: 8000
   type: LoadBalancer
