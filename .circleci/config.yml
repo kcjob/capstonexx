@@ -27,7 +27,7 @@ jobs:
       - run:
           name: delete cluster
           command: |
-            #sudo eksctl delete cluster --name capstone --region us-east-1
+            sudo eksctl delete cluster --name capstone --region us-east-1
             echo
 
 #            kubectl get services
