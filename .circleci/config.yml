@@ -23,8 +23,8 @@ jobs:
           name: create cluster
           command: |
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-            #aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            #aws configure set aws_role_arn $AWS_ROLE_ARN
+            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            aws configure set role_arn $ROLE_ARN
             sudo eksctl create cluster --version 1.17 --name demo-cluster --region us-east-1 --nodegroup-name linux-nodes --node-type t2.micro --nodes 2
             echo
 
