@@ -21,13 +21,13 @@ jobs:
       - run:
           name: create cluster
           command: |
-            #sudo eksctl create cluster --name demo-cluster --region us-east-1 --nodegroup-name linux nodes --node-type t2.micro --nodes 2
+            sudo eksctl create cluster --name demo-cluster --region us-east-1 --nodegroup-name linux nodes --node-type t2.micro --nodes 2
             echo
 
       - run:
           name: delete cluster
           command: |
-            sudo eksctl delete cluster --name capstone --region us-east-1
+            #sudo eksctl delete cluster --name capstone --region us-east-1
             echo
 
 #            kubectl get services
