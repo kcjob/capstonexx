@@ -30,7 +30,7 @@ jobs:
             aws configure set role_arn $ROLE_ARN --profile circleci
             #sudo eksctl create cluster -f eks-cluster.yml #--version 1.17 --name capstone --region us-east-1 --nodegroup-name linux-nodes --node-type t2.micro --nodes 2
 
-            eksctl create cluster --name capstone --version 1.16 --nodegroup-name standard-workers --node-type t2.micro --nodes 3 --nodes-min 1 --nodes-max 4 --node-ami auto --region us-east-1 --availabilityZones ['us-east-1a', 'us-east-1b', 'us-east-1c', 'us-east-1d']
+            eksctl create cluster --name capstone --version 1.16 --nodegroup-name standard-workers --node-type t2.micro --nodes 3 --nodes-min 1 --nodes-max 4 --node-ami auto --region us-east-1 ---zones us-east-1a,us-east-1b,us-east-1c
 
       - run:
           name: delete cluster
