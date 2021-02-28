@@ -23,7 +23,7 @@ jobs:
           name: create cluster
           command: |
             pwd
-            ls -la ~/k8s
+            ls -la ~/project/k8s
             #cd /home/circleci/project/k8s/deployment.tpl
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
