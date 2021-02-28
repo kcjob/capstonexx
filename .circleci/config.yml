@@ -89,14 +89,14 @@ jobs:
             cat k8s/deployment.tpl |\
             sed "s|DOCKER_REPO_NAME|<< parameters.account-url >>|" |\
             sed "s|DOCKER_IMAGE_TAG|<< parameters.tag >>|" > k8s/deployment.yaml; \
-            cat k8s/deployment.yaml
+            cat k8s/namespace.yml
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: << parameters.cluster-name >>
           install-kubectl: true
           aws-region: << parameters.aws-region >>
       - kubernetes/create-or-update-resource:
           action-type: apply
-          resource-file-path: "namespace.yaml"
+          resource-file-path: "k8s/namespace.yaml"
           show-kubectl-command: true
       - kubernetes/create-or-update-resource:
           action-type: apply
@@ -130,7 +130,7 @@ workflows:
           path: .circleci/dockerstuff
           tag: ${CIRCLE_SHA1}
           requires:
-            - check-cluster 
+            - check-cluster
       - deploy-application:
           cluster-name: capstone
           aws-region: us-east-1
