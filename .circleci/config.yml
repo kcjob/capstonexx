@@ -5,6 +5,33 @@ orbs:
   kubernetes: circleci/kubernetes@0.11.2
 
 jobs:
+  eksctl-install:
+    executor: aws-eks/python3
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["a3:27:68:1c:b4:68:20:dd:2a:d7:5e:79:3d:06:77:46"]
+      - run:
+          name: install eksctl
+          command: |
+            sudo apt install ansible
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+            echo "eksctl version: " $(sudo eksctl version)
+      - run:
+          name: create cluster
+          command: |
+            #sudo eksctl create cluster --name demo-cluster --region us-east-1 --nodegroup-name linux nodes --node-type t2.micro --nodes 2
+            echo
+
+      - run:
+          name: delete cluster
+          command: |
+            #sudo eksctl delete cluster --name capstone --region us-east-1
+            echo
+
+#            kubectl get services
+
   check-cluster:
     executor: aws-eks/python3
     parameters:
@@ -73,28 +100,29 @@ jobs:
 workflows:
   main:
     jobs:
-      - aws-eks/create-cluster:
-          cluster-name: capstone
-      - check-cluster:
-          cluster-name: capstone
-          requires:
-            - aws-eks/create-cluster
-      - aws-ecr/build-and-push-image:
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          region: AWS_DEFAULT_REGION
-          account-url: AWS_ECR_ACCOUNT_URL
-          repo: capstone
-          create-repo: true
-          dockerfile: Dockerfile
-          path: .circleci/dockerstuff
-          tag: ${CIRCLE_SHA1}
-          requires:
-            - aws-eks/create-cluster
-      - deploy-application:
-          cluster-name: capstone
-          aws-region: us-east-1
-          account-url: ${AWS_ECR_ACCOUNT_URL}
-          tag: ${CIRCLE_SHA1}
-          requires:
-            - aws-ecr/build-and-push-image
+      - eksctl-install
+#      - aws-eks/create-cluster:
+#          cluster-name: capstone
+#      - check-cluster:
+#          cluster-name: capstone
+#          requires:
+#            - aws-eks/create-cluster
+#      - aws-ecr/build-and-push-image:
+#          aws-access-key-id: AWS_ACCESS_KEY_ID
+#          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+#          region: AWS_DEFAULT_REGION
+#          account-url: AWS_ECR_ACCOUNT_URL
+#          repo: capstone
+#          create-repo: true
+#          dockerfile: Dockerfile
+#          path: .circleci/dockerstuff
+#          tag: ${CIRCLE_SHA1}
+#          requires:
+#            - aws-eks/create-cluster
+#      - deploy-application:
+#          cluster-name: capstone
+#          aws-region: us-east-1
+#          account-url: ${AWS_ECR_ACCOUNT_URL}
+#          tag: ${CIRCLE_SHA1}
+#          requires:
+#            - aws-ecr/build-and-push-image
