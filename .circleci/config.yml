@@ -117,24 +117,24 @@ workflows:
       #- eksctl-install
       - check-cluster:
           cluster-name: capstone
-      #    requires:
-      #      - eksctl-install
-      #- aws-ecr/build-and-push-image:
-      #    aws-access-key-id: AWS_ACCESS_KEY_ID
-      #    aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-      #    region: AWS_DEFAULT_REGION
-      #    account-url: AWS_ECR_ACCOUNT_URL
-      #    repo: capstone
-      #    create-repo: true
-      #    dockerfile: Dockerfile
-      #    path: .circleci/dockerstuff
-      #    tag: ${CIRCLE_SHA1}
-      #    requires:
-      #      - eksctl-install
-      #- deploy-application:
-      #    cluster-name: capstone
-      #    aws-region: us-east-1
-      #    account-url: ${AWS_ECR_ACCOUNT_URL}
-      #    tag: ${CIRCLE_SHA1}
-      #    requires:
-      #      - aws-ecr/build-and-push-image
+          requires:
+            - eksctl-install
+      - aws-ecr/build-and-push-image:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          region: AWS_DEFAULT_REGION
+          account-url: AWS_ECR_ACCOUNT_URL
+          repo: capstone
+          create-repo: true
+          dockerfile: Dockerfile
+          path: .circleci/dockerstuff
+          tag: ${CIRCLE_SHA1}
+          requires:
+            - eksctl-install
+      - deploy-application:
+          cluster-name: capstone
+          aws-region: us-east-1
+          account-url: ${AWS_ECR_ACCOUNT_URL}
+          tag: ${CIRCLE_SHA1}
+          requires:
+            - aws-ecr/build-and-push-image
