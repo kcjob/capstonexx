@@ -115,7 +115,7 @@ workflows:
   main:
     jobs:
       #- eksctl-install
-      - check-cluster:
+      - check-cluster
       #    requires:
       #      - eksctl-install
       #- aws-ecr/build-and-push-image:
