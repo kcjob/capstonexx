@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: webapp
-          image: capstone/hello:${CIRCLE_SHA1}
+          image: capstone/capstone:${CIRCLE_SHA1}
           ports:
           - containerPort: 8000
