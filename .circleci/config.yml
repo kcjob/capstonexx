@@ -104,7 +104,7 @@ jobs:
           resource-file-path: "k8s/deployment.tpl"
           show-kubectl-command: true
           get-rollout-status: true
-          resource-name: capstone/hello
+          resource-name: deployment/hello
           namespace: capstone
       - kubernetes/create-or-update-resource:
           action-type: apply
