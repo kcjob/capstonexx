@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1 #beta1
 kind: Deployment
 metadata:
   name: capstone
