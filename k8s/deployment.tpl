@@ -16,7 +16,7 @@ spec:
         app: webapp
     spec:
       containers:
-      - image: capstone/hello:latest
-        ports:
-        - containerPort: 8000
-          name: webapp
+        - name: webapp
+          image: capstone/hello:latest
+          ports:
+          - containerPort: 8000
