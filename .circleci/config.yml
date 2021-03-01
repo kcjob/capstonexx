@@ -91,7 +91,7 @@ jobs:
           command: |
             pwd
             cat k8s/deployment.tpl |\
-            sed "s|DOCKER_IMAGE_NAME|<< parameters.docker-image-name >>|\
+            sed "s|DOCKER_IMAGE_NAME|<< parameters.docker-image-name >>|" |\
             sed "s|DOCKER_REPO_NAME|<< parameters.account-url >>|" |\
             sed "s|DOCKER_IMAGE_TAG|<< parameters.tag >>|" > k8s/deployment.yml; \
             cat k8s/namespace.yml
