@@ -96,7 +96,7 @@ jobs:
           aws-region: << parameters.aws-region >>
       - kubernetes/create-or-update-resource:
           action-type: apply
-          resource-file-path: "k8s"
+          resource-file-path: "k8s/namespace.yaml"
           show-kubectl-command: true
           namespace: capstone
       - kubernetes/create-or-update-resource:
