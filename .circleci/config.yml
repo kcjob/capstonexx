@@ -55,7 +55,7 @@ jobs:
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: << parameters.cluster-name >>
       - run:
-          name: capstone
+          name: Kluster info
           command: |
             kubectl get services
             #aws eks update-kubeconfig --name capstone --region us-east-1
@@ -96,8 +96,9 @@ jobs:
           aws-region: << parameters.aws-region >>
       - kubernetes/create-or-update-resource:
           action-type: apply
-          resource-file-path: "k8s/namespace.yaml"
+          resource-file-path: "k8s"
           show-kubectl-command: true
+          namespace: capstone
       - kubernetes/create-or-update-resource:
           action-type: apply
           resource-file-path: "k8s/deployment.yaml"
@@ -105,11 +106,11 @@ jobs:
           get-rollout-status: true
           resource-name: deployment/capstone
           namespace: capstone
-      #- kubernetes/create-or-update-resource:
-      #    action-type: apply
-      #    resource-file-path: "k8s/service.yaml"
-      #    show-kubectl-command: true
-      #    namespace: capstone
+      - kubernetes/create-or-update-resource:
+          action-type: apply
+          resource-file-path: "k8s/service.yaml"
+          show-kubectl-command: true
+          namespace: capstone
 
 workflows:
   main:
