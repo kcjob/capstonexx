@@ -17,3 +17,8 @@ COPY . /nlib /app/
 RUN pip install --upgrade pip &&\
     pip install sklearn &&\
     pip install --trusted-host pypi.python.org -r requirements.txt
+
+## Step 4:
+Expose 80
+
+CMD ["python", "flask_app/webapp.py"]
