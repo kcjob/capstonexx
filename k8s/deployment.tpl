@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: webapp
-          image: capstone/capstone:${CIRCLE_SHA1}
+          image: DOCKER_IMAGE_NAME #capstone/capstone:${CIRCLE_SHA1}
           ports:
           - containerPort: 8000
