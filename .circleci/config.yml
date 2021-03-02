@@ -192,3 +192,4 @@ workflows:
           expected-version-info: "${CIRCLE_SHA1}"
           requires:
             - deploy-application
+            
