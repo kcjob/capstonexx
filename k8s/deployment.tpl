@@ -9,14 +9,14 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app: webapp
+      app: capstone
   template:
     metadata:
       labels:
-        app: webapp
+        app: capstone
     spec:
       containers:
-        - name: webapp
-          image: capstone/capstone:${CIRCLE_SHA1}
+        - name: capstone
+          image: 067015178777.dkr.ecr.us-east-1.amazonaws.com/capstone:latest
           ports:
           - containerPort: 8000
