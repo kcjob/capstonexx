@@ -176,8 +176,8 @@ workflows:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           create-repo: true
           tag: latest
-          requires:
-            - check-cluster
+          #requires:
+          #  - check-cluster
       - deploy-application:
           cluster-name: capstone
           aws-region: $AWS_DEFAULT_REGION
