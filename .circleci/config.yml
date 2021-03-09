@@ -144,8 +144,9 @@ jobs:
             kubectl get pods
             kubectl get services
             sleep 30
-            for attempt in {1..20}; do
+            for attempt in $(seq 1 20); do
               EXTERNAL_IP=$(kubectl get service demoapp | awk '{print $4}' | tail -n1)
+              EXTERNAL_PORT=$(kubectl get services --namespace=capstone | tail -n1 | awk '{ print $5 }' | cut -d : -f1)
               echo "Checking external IP: ${EXTERNAL_IP}"
               if [ -n "${EXTERNAL_IP}" ] && [ -z $(echo "${EXTERNAL_IP}" | grep "pending") ]; then
                 break
@@ -154,14 +155,14 @@ jobs:
               sleep 10
             done
             sleep 180
-            curl -s --retry 10 "http://$EXTERNAL_IP" | grep "<< parameters.expected-version-info >>"
+            curl -s --retry 10 "http://$EXTERNAL_IP:$EXTERNAL_PORT" | grep "hello"
 
 workflows:
   main:
     jobs:
       #- eksctl-install
-      #- check-cluster:
-      #    cluster-name: capstone
+      - check-cluster:
+          cluster-name: capstone
           #requires:
           #  - eksctl-install
       - aws-ecr/build-and-push-image:
@@ -175,16 +176,16 @@ workflows:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           create-repo: true
           tag: latest
-          #requires:
-          #  - check-cluster
-      #- deploy-application:
-      #    cluster-name: capstone
-      #    aws-region: $AWS_DEFAULT_REGION
-      #    account-url: ${AWS_ECR_ACCOUNT_URL}
-      #    docker-image-name: "${AWS_ECR_URL}/capstone:${CIRCLE_SHA1}"
-      #    tag: ${CIRCLE_SHA1}
-      #    requires:
-      #      - aws-ecr/build-and-push-image
+          requires:
+            - check-cluster
+      - deploy-application:
+          cluster-name: capstone
+          aws-region: $AWS_DEFAULT_REGION
+          account-url: ${AWS_ECR_ACCOUNT_URL}
+          docker-image-name: "${AWS_ECR_URL}/capstone:latest"
+          tag: latest
+          requires:
+            - aws-ecr/build-and-push-image
       #- test-application:
       #    name: test-application
       #    cluster-name: capstone
