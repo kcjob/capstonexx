@@ -99,23 +99,23 @@ jobs:
           cluster-name: << parameters.cluster-name >>
           install-kubectl: true
           aws-region: << parameters.aws-region >>
-      - kubernetes/create-or-update-resource:
-          action-type: apply
-          resource-file-path: "k8s/namespace.yml"
-          show-kubectl-command: true
-          namespace: capstone
+      #- kubernetes/create-or-update-resource:
+      #    action-type: apply
+      #    resource-file-path: "k8s/namespace.yml"
+      #    show-kubectl-command: true
+      #    namespace: capstone
       - kubernetes/create-or-update-resource:
           action-type: apply
           resource-file-path: "k8s/deployment.tpl"
           show-kubectl-command: true
           get-rollout-status: true
           resource-name: deployment/capstone
-          namespace: capstone
+      #    namespace: capstone
       - kubernetes/create-or-update-resource:
           action-type: apply
           resource-file-path: "k8s/service.yml"
           show-kubectl-command: true
-          namespace: capstone
+      #    namespace: capstone
   test-application:
     executor: aws-eks/python3
     parameters:
