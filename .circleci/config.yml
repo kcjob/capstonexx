@@ -191,7 +191,7 @@ workflows:
           name: test-application
           cluster-name: capstone
           aws-region: $AWS_DEFAULT_REGION
-      #    expected-version-info: "${CIRCLE_SHA1}"
+          expected-version-info: "${CIRCLE_SHA1}"
           requires:
            - deploy-application
             
