@@ -2,7 +2,7 @@ apiVersion: apps/v1 #beta1
 kind: Deployment
 metadata:
   name: capstone
-  namespace: capstone
+  #namespace: capstone
 spec:
   replicas: 1
   strategy:
