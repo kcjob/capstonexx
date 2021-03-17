@@ -165,8 +165,8 @@ workflows:
       #- eksctl-install
       - check-cluster:
           cluster-name: capstone
-          requires:
-            - eksctl-install
+          #requires:
+          #  - eksctl-install
       - aws-ecr/build-and-push-image:
           #name: build-and-push-image
           account-url: AWS_ECR_ACCOUNT_URL
