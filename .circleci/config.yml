@@ -1,37 +1,28 @@
 version: 2.1
 orbs:
+  aws-eks: circleci/aws-eks@1.0.3
+  aws-ecr: circleci/aws-ecr@6.15.3
+  kubernetes: circleci/kubernetes@0.11.2
   slack: circleci/slack@4.1
 
 commands:
   destroy-environment:
-    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    parameters:
-      # Add parameter here
-      server:
-        default: "server-${CIRCLE_WORKFLOW_ID:0:7}"
-        type: string
     steps:
       - run:
           name: Destroy environments
           when: on_fail
           command: |
-            #aws --version
             echo "DESTROY STACKS"
-            aws cloudformation delete-stack --stack-name server-${CIRCLE_WORKFLOW_ID:0:7}
-            echo "${CIRCLE_WORKFLOW_ID:0:7}"
             echo "Destroyed ?????"
-            #exit 1
+
 jobs:
 #----------- Job 1 ----------------
   linting:
     docker:
       - image: python:3.7.3-stretch
-
     working_directory: ~/project
-
     steps:
       - checkout
-
       - run:
           name: checking paths
           command: |
@@ -173,11 +164,7 @@ jobs:
 workflows:
   default:
     jobs:
-      - create-infrastructure
-      - deploy-minikube-and-kubectl:
-          requires: [create-infrastructure]
-
-      #- linting
+      - linting
       #- create-docker
       #- create-server
       #- run-app
