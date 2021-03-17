@@ -72,85 +72,23 @@ jobs:
 
 #--------------- Job 2 ------------------
 
-  create-infrastructure:
-    docker:
-      - image: amazon/aws-cli
-
+  check-cluster:
+    executor: aws-eks/python3
+    parameters:
+      cluster-name:
+        description: |
+          Name of the EKS cluster
+        type: string
     steps:
-      - checkout
-
-      - run: yum -y install tar gzip jq npm
-      - run: yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm jq
-
+      - kubernetes/install
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: << parameters.cluster-name >>
       - run:
-          name: Ensure server infrastructure exists
+          name: Kluster info
           command: |
-            pwd
-            aws cloudformation deploy \
-            --template-file .circleci/files/server.yml \
-            --tags Name=uda-capstone \
-            --stack-name "server-${CIRCLE_WORKFLOW_ID:0:7}" \
-            --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
-            --region=us-east-1
-
-      - run:
-          name: Add server ip to ansible inventory files
-          command: |
-            cd ~/project/.circleci/ansible/
-            ls -la
-
-            SERVER_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=server-${CIRCLE_WORKFLOW_ID:0:7}" --region=us-east-1 --output text)
-
-            echo $SERVER_IP >> inventory.txt
-            cat inventory.txt
-
-            curl -H "Content-Type: text/plain" -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request PUT --data "$SERVER_IP" https://api.memstash.io/values/serverip
-
-      #Store
-      - run:
-          name: Store server ID
-          command: |
-
-            echo $SERVER_IP
-
-            curl -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/serverip
-
-            cat ~/project/.circleci/ansible/inventory.txt
-
-      - destroy-environment
-
-#------------------------------------------
-
-  deploy-minikube-and-kubectl:
-    docker:
-      - image: python:3.7-alpine3.11
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints: ["a3:27:68:1c:b4:68:20:dd:2a:d7:5e:79:3d:06:77:46"]
-
-      - attach_workspace:
-          at: ~/project/
-
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible
-            apk add curl
-            pip install awscli
-
-      - run:
-          name: Deploy minikube
-          command: |
-            cd ~/project/.circleci/ansible
-            ls -la
-
-            SERVERIP=$(curl -H "token: ab-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/serverip)
-            echo "the id is: " $SERVERIP
-            echo $SERVERIP >> inventory.txt
-
-            ansible-playbook -i inventory.txt deploy-server.yml
-
+            kubectl get services
+            #aws eks update-kubeconfig --name capstone --region us-east-1
+            kubectl get nodes
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -165,6 +103,11 @@ workflows:
   default:
     jobs:
       - linting
-      #- create-docker
-      #- create-server
-      #- run-app
+      #- eksctl-install
+         #requires:
+         #  - eskctl-install   
+      - check-cluster
+         requires:
+           - linting
+         #   - eskctl-install
+
