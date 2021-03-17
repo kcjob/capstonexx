@@ -96,7 +96,7 @@ jobs:
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
-#---------------------- Job 3 --------------
+#--------------------- Job 3 --------------
   deploy-application:
     executor: aws-eks/python3
     parameters:
@@ -153,7 +153,7 @@ jobs:
           show-kubectl-command: true
           namespace: capstone
 
-#------------------- Job 4 --------------------------
+#--------------------- Job 4 --------------------------
 
   test-application:
     executor: aws-eks/python3
@@ -195,7 +195,7 @@ jobs:
             sleep 180
             curl -s --retry 10 "http://$EXTERNAL_IP" | grep "<< parameters.expected-version-info >>"
 
-#---------------------------------Job 5------------
+#--------------------- Job 5------------
 
 workflows:
   main:
