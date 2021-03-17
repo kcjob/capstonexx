@@ -16,7 +16,7 @@ commands:
             echo "Destroyed ?????"
 
 jobs:
-#----------- Job 1 ----------------
+#--------------------- Job 1 ----------------
   linting:
     docker:
       - image: python:3.7.3-stretch
@@ -70,7 +70,7 @@ jobs:
           event: fail
           template: basic_fail_1
 
-#--------------- Job 2 ------------------
+#--------------------- Job 2 ------------------
 
   check-cluster:
     executor: aws-eks/python3
@@ -96,7 +96,7 @@ jobs:
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
-#---------------------- Job 3--------------
+#---------------------- Job 3 --------------
   deploy-application:
     executor: aws-eks/python3
     parameters:
