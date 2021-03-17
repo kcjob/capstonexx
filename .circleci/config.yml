@@ -100,7 +100,7 @@ jobs:
 
 
 workflows:
-  default:
+  main:
     jobs:
       - linting
       #- eksctl-install
