@@ -163,10 +163,10 @@ workflows:
   main:
     jobs:
       #- eksctl-install
-      #- check-cluster:
-        #  cluster-name: capstone
-          #requires:
-          #  - eksctl-install
+      - check-cluster:
+          cluster-name: capstone
+          requires:
+            - eksctl-install
       - aws-ecr/build-and-push-image:
           #name: build-and-push-image
           account-url: AWS_ECR_ACCOUNT_URL
@@ -180,14 +180,14 @@ workflows:
           tag: latest
           #requires:
           #  - check-cluster
-      #- deploy-application:
-      #    cluster-name: capstone
-      #    aws-region: $AWS_DEFAULT_REGION
-      #    account-url: ${AWS_ECR_ACCOUNT_URL}
-      #    docker-image-name: "${AWS_ECR_URL}/capstone:latest"
-      #    tag: latest
-       #   requires:
-       #     - aws-ecr/build-and-push-image
+      - deploy-application:
+          cluster-name: capstone
+          aws-region: $AWS_DEFAULT_REGION
+          account-url: ${AWS_ECR_ACCOUNT_URL}
+          docker-image-name: "${AWS_ECR_URL}/capstone:latest"
+          tag: latest
+          requires:
+            - aws-ecr/build-and-push-image
       #- test-application:
       #    name: test-application
       #    cluster-name: capstone
