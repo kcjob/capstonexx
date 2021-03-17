@@ -107,6 +107,7 @@ workflows:
          #requires:
          #  - eskctl-install   
       - check-cluster
+          cluster-name: capstone
           #requires:
           #  - linting
          #   - eskctl-install
