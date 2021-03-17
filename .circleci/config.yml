@@ -188,11 +188,11 @@ workflows:
           tag: latest
           requires:
             - aws-ecr/build-and-push-image
-      - test-application:
-          name: test-application
-          cluster-name: capstone
-          aws-region: $AWS_DEFAULT_REGION
-          expected-version-info: "${CIRCLE_SHA1}"
-          requires:
-           - deploy-application
+      #- test-application:
+      #    name: test-application
+      #    cluster-name: capstone
+      #    aws-region: $AWS_DEFAULT_REGION
+      #    expected-version-info: "${CIRCLE_SHA1}"
+      #    requires:
+      #     - deploy-application
             
