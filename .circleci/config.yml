@@ -107,7 +107,7 @@ workflows:
          #requires:
          #  - eskctl-install   
       - check-cluster
-         requires:
-           - linting
+          requires:
+            - linting
          #   - eskctl-install
 
