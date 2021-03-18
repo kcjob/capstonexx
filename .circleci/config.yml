@@ -164,7 +164,7 @@ workflows:
     jobs:
       #- eksctl-install
       - check-cluster:
-          cluster-name: capstone
+          cluster-name: mycapstone
           #requires:
           #  - eksctl-install
       - aws-ecr/build-and-push-image:
