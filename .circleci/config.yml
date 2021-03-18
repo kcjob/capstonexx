@@ -34,11 +34,11 @@ jobs:
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             aws configure set role_arn $ROLE_ARN --profile circleci
 
-            eksctl create cluster --name capstone --version 1.16 --nodegroup-name standard-workers --node-type t2.micro --nodes 3 --nodes-min 1 --nodes-max 4 --node-ami auto --region us-east-1 --zones us-east-1a,us-east-1b,us-east-1c
+            eksctl create cluster --name mycapstone --version 1.16 --nodegroup-name standard-workers --node-type t2.micro --nodes 3 --nodes-min 1 --nodes-max 4 --node-ami auto --region us-east-1 --zones us-east-1a,us-east-1b,us-east-1c
       - run:
           name: delete cluster
           command: |
-            #sudo eksctl delete cluster --name capstone --region us-east-1
+            #sudo eksctl delete cluster --name mycapstone --region us-east-1
             echo
 
             kubectl get services
@@ -58,7 +58,7 @@ jobs:
           name: Kluster info
           command: |
             kubectl get services
-            #aws eks update-kubeconfig --name capstone --region us-east-1
+            #aws eks update-kubeconfig --name mycapstone --region us-east-1
             kubectl get nodes
 
   deploy-application:
@@ -163,25 +163,25 @@ workflows:
   main:
     jobs:
       #- eksctl-install
-      #- check-cluster:
-      #    cluster-name: capstone
+      - check-cluster:
+          cluster-name: capstone
           #requires:
           #  - eksctl-install
       - aws-ecr/build-and-push-image:
           #name: build-and-push-image
           account-url: AWS_ECR_ACCOUNT_URL
           region: AWS_DEFAULT_REGION
-          repo: capstone
+          repo: mycapstone
           dockerfile: Dockerfile
           path: .circleci/dockerstuff
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           create-repo: true
           tag: latest
-          #requires:
-          #  - check-cluster
+          requires:
+            - check-cluster
       - deploy-application:
-          cluster-name: capstone
+          cluster-name: mycapstone
           aws-region: $AWS_DEFAULT_REGION
           account-url: ${AWS_ECR_ACCOUNT_URL}
           docker-image-name: "${AWS_ECR_URL}/capstone:latest"
@@ -190,7 +190,7 @@ workflows:
             - aws-ecr/build-and-push-image
       #- test-application:
       #    name: test-application
-      #    cluster-name: capstone
+      #    cluster-name: mycapstone
       #    aws-region: $AWS_DEFAULT_REGION
       #    expected-version-info: "${CIRCLE_SHA1}"
       #    requires:
