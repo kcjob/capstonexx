@@ -145,16 +145,7 @@ jobs:
             kubectl get services
             sleep 30
             EXTERNAL_IP=$(kubectl get service demoapp | awk '{print $4}' | tail -n1)
-            #for attempt in $(seq 1 20); do
-            #  EXTERNAL_IP=$(kubectl get service demoapp | awk '{print $4}' | tail -n1)
-              #EXTERNAL_PORT=$(kubectl get services --namespace=capstone | tail -n1 | awk '{ print $5 }' | cut -d : -f1)
-            #  echo "Checking external IP: ${EXTERNAL_IP}"
-            #  if [ -n "${EXTERNAL_IP}" ] && [ -z $(echo "${EXTERNAL_IP}" | grep "pending") ]; then
-            #    break
-            #  fi
-            #  echo "Waiting for external IP to be ready: ${EXTERNAL_IP}"
-            #  sleep 10
-            #done
+            #EXTERNAL_PORT=$(kubectl get services --namespace=capstone | tail -n1 | awk '{ print $5 }' | cut -d : -f1)
             #sleep 180
             #curl -s "http://$EXTERNAL_IP:$EXTERNAL_PORT" | grep "hello"
             #curl -s "http://$EXTERNAL_IP | grep "hello"
@@ -184,8 +175,8 @@ workflows:
           cluster-name: mycapstone
           aws-region: $AWS_DEFAULT_REGION
           account-url: ${AWS_ECR_ACCOUNT_URL}
-          docker-image-name: "${AWS_ECR_URL}/capstone:${CIRCLE_SHA1}"
-          tag: latest
+          docker-image-name: "${AWS_ECR_URL}/capstone:latest"
+          tag: ${CIRCLE_SHA1}
           requires:
             - aws-ecr/build-and-push-image
       #- test-application:
