@@ -163,8 +163,8 @@ workflows:
   main:
     jobs:
       #- eksctl-install
-      #- check-cluster:
-      #    cluster-name: capstone
+      - check-cluster:
+          cluster-name: capstone
           #requires:
           #  - eksctl-install
       - aws-ecr/build-and-push-image:
@@ -178,8 +178,8 @@ workflows:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           create-repo: true
           tag: latest
-          #requires:
-          #  - check-cluster
+          requires:
+            - check-cluster
       - deploy-application:
           cluster-name: capstone
           aws-region: $AWS_DEFAULT_REGION
