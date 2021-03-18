@@ -65,7 +65,8 @@ jobs:
      steps:
        - checkout
        - run: |
-           echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+           echo hello!!
+           #echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
            #docker rm $(docker ps -aq)
            #docker image rm capstone
            #docker image rm 067015178777.dkr.ecr.us-east-1.amazonaws.com/capstone
