@@ -184,7 +184,7 @@ workflows:
           cluster-name: mycapstone
           aws-region: $AWS_DEFAULT_REGION
           account-url: ${AWS_ECR_ACCOUNT_URL}
-          docker-image-name: "${AWS_ECR_URL}/capstone:latest"
+          docker-image-name: "${AWS_ECR_URL}/capstone:${CIRCLE_SHA1}"
           tag: latest
           requires:
             - aws-ecr/build-and-push-image
