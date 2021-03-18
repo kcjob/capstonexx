@@ -181,7 +181,7 @@ workflows:
       #    create-repo: true
       #    tag: latest
       #    requires:
-            - check-cluster
+      #       - check-cluster
       #- deploy-application:
       #    cluster-name: mycapstone
       #    aws-region: $AWS_DEFAULT_REGION
