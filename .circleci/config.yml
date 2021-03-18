@@ -61,6 +61,11 @@ jobs:
             #aws eks update-kubeconfig --name mycapstone --region us-east-1
             kubectl get nodes
 
+  
+  #docker rm $(docker ps -aq)
+docker image rm capstone
+docker image rm 067015178777.dkr.ecr.us-east-1.amazonaws.com/capstone
+
   deploy-application:
     executor: aws-eks/python3
     parameters:
