@@ -4,6 +4,8 @@ FROM python:3.7.3-stretch
 # Create a working directory
 WORKDIR /app
 #docker rm $(docker ps -aq)
+docker image rm capstone
+docker 067015178777.dkr.ecr.us-east-1.amazonaws.com/capstone
 
 ## Step 2:
 # Copy source code to working directory
