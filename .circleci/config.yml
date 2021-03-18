@@ -62,14 +62,14 @@ jobs:
             kubectl get nodes
   docker_check:
     machine: true
-     steps:
-       - checkout
-       - run: |
-           echo hello!!
-           #echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
-           #docker rm $(docker ps -aq)
-           #docker image rm capstone
-           #docker image rm 067015178777.dkr.ecr.us-east-1.amazonaws.com/capstone
+    steps:
+      - checkout
+      - run: |
+          echo hello!!
+          #echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+          #docker rm $(docker ps -aq)
+          #docker image rm capstone
+          #docker image rm 067015178777.dkr.ecr.us-east-1.amazonaws.com/capstone
 
   deploy-application:
     executor: aws-eks/python3
