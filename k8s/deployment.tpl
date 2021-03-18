@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: capstone
-        image: joepub/capstone:latest
+        image: joepub/capstone:${CIRCLE_SHA1}
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
